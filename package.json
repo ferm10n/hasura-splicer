@@ -1,0 +1,20 @@
+{
+  "name": "hasura-splicer",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "hasura-splicer": "./bin.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "John Sanders <jws121295@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "ajv": "^7.1.0",
+    "commander": "^7.0.0",
+    "yaml": "^1.10.0"
+  }
+}
