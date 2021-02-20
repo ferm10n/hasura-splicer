@@ -1,8 +1,8 @@
-#!/bin/env node
-const { program } = require('commander');
-const { split } = require('./index');
-const { loadConfig } = require('./config');
-const pkg = require('./package.json');
+#!/usr/bin/env node
+import { program } from 'commander';
+import { split } from './splicer';
+import { loadConfig } from './config';
+import pkg from '../package.json';
 
 try {
     program.version(pkg.version);

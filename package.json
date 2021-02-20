@@ -2,11 +2,12 @@
   "name": "hasura-splicer",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/splicer.js",
   "bin": {
-    "hasura-splicer": "./bin.js"
+    "hasura-splicer": "./dist/src/bin.js"
   },
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,5 +17,9 @@
     "ajv": "^7.1.0",
     "commander": "^7.0.0",
     "yaml": "^1.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.31",
+    "typescript": "^4.1.5"
   }
 }

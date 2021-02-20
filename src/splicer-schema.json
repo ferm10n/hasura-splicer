@@ -1,0 +1,35 @@
+{
+    "type": "object",
+    "properties": {
+        "splicer": {
+            "type": "object",
+            "required": [
+                "modules"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "modules": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "schemas",
+                            "path"
+                        ],
+                        "properties": {
+                            "path": {
+                                "type": "string"
+                            },
+                            "schemas": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
