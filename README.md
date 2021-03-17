@@ -55,7 +55,15 @@ hasura
 
 Here's what would happen:
 
-- `npm i -g hasura-splicer`
+First,  install `hasura-splicer`:
+`npm i -g hasura-splicer` 
+or  from source
+```sh 
+npm install
+npm run build
+npm install -g
+```
+
 - `cd` into `hasura/full` and run `npx hasura-splicer split`
 - the splicer scans through all `table.schema`s to determine what the modules should be
 - directories are created for each module
