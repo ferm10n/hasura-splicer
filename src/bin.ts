@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { program } from 'commander';
-import { split } from './splicer';
+import { split } from './commands/split';
 import { loadConfig } from './config';
 import pkg from '../package.json';
 
@@ -12,8 +12,8 @@ try {
     const splitCommand = program.command('split');
     splitCommand.description('split metadata into parts by their schema');
     splitCommand.action((args, opts) => {
-        const config = loadConfig(program.opts().config);
-        split(config);
+        const state = loadConfig(program.opts().config);
+        split(state);
     });
 
     // show help when not used correctly

@@ -4,11 +4,14 @@
         "splicer": {
             "type": "object",
             "required": [
-                "modules"
+                "folders"
             ],
             "additionalProperties": false,
             "properties": {
-                "modules": {
+                "origin": {
+                    "type": "string"
+                },
+                "folders": {
                     "type": "array",
                     "items": {
                         "type": "object",
