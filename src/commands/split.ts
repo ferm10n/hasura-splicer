@@ -37,7 +37,15 @@ function readMetadata (hasuraDir: string) {
 
 /**
  * - resolve metadata location
- * - walk through
+ * - parse the metadata
+ * - go through each table entry
+ *      - if the table belongs to a scoped folder already defined, add it
+ *      - if the schema has not been defined, then add it
+ *      - if multiple scoped folders have the schema defined, throw
+ *      - if the table has a relationship that belongs to a different schema, add it to the list of things for the user to resolve
+ * - prompt the user about where to put each non-table metadata, and relationship we added in the previous step
+ * - write the metadata to each of the folders
+ * - create/update the config.yaml for each folder
  */
 export function split (state: SplicerState) {
     // TODO: check which folder a table should go into, and check if there is ambiguity, like if multiple folders specify the same schema
@@ -49,12 +57,39 @@ export function split (state: SplicerState) {
     //         config.expectedSchemas.add(schema);
     //     }
     // }
-    
+
     const metadataPath = state.hasuraConfig.metadata_directory || path.join(state.hasuraDir, 'metadata');
     const fullMetadata = readMetadata(metadataPath);
 
-    /** mapping from the folder path to the tables to write there */
-    const splitTablesMap = new Map<string, MetadataTable[]>();
+    const folderTargets: {
+        /** absolute path to the planned scoped metadata folder */
+        path: string;
+        schemas: string[];
+        tables: MetadataTable[];
+    }[] = state.splicerConfig.folders.map(f => ({
+        path: f.path,
+        tables: [],
+        schemas: f.schemas || [],
+    }));
+
+    // check each table
+    for (const tableMetadata of fullMetadata.tables || []) {
+        const schema = tableMetadata.table.schema;
+        // try to find a matching entry in the map
+        const possibleFolderTargets = folderTargets.filter(ft => ft.schemas.includes(schema));
+        if (possibleFolderTargets.length > 1) {
+            throw new Error(`splicer config is invalid. multiple folders specify the same schema: ${possibleFolderTargets.map(ft => ft.path).join(', ')}`);
+        }
+        if (possibleFolderTargets.length === 0) {
+            possibleFolderTargets.push({
+                path: path.join(state.hasuraDir, '..', schema),
+                schemas: [ schema ],
+                tables: [ tableMetadata.table ],
+            });
+        }
+
+        // TODO check for ambiguous relationships
+    }
 
     // const newModules = [];
     // for (const tableMetadata of fullMetadata.tables) {

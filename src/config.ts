@@ -32,5 +32,16 @@ export function loadConfig (configPath: string): SplicerState {
         },
     };
 
+    // check that there are no duplicate paths
+    // also normalize path
+    const seenPaths = new Set();
+    for (const folder of state.splicerConfig.folders) {
+        if (seenPaths.has(folder.path)) {
+            throw new Error(`splicer config is invalid. duplicate paths detected: ${folder.path}`);
+        }
+        seenPaths.add(folder.path);
+        folder.path = path.relative(fullConfigPath, folder.path);
+    }
+
     return state;
 }
